@@ -54,7 +54,7 @@ function renderList(list, type) {
         if (type === 'wallpapers') {
             visualHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
         } else {
-            let icon = (type === 'software') ? "⚙️" : "📕";
+            let icon = (type === 'demos') ? "⚙️" : "📕";
             visualHTML = `<div class="icon-placeholder">${icon}</div>`;
         }
 
