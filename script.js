@@ -1,6 +1,6 @@
 // 1. Configuración de tu repo
-const usuario = "TU_USUARIO_DE_GITHUB"; 
-const repo = "NOMBRE_DE_TU_REPOSITORIO";
+const usuario = "asusvisualdisplay"; 
+const repo = "contenidos";
 const carpeta = "wallpapers";
 
 const gallery = document.getElementById('gallery');
