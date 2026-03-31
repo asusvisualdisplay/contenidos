@@ -1,61 +1,70 @@
-// 1. Configuración de tu repo
+// CONFIGURACIÓN DE TU REPOSITORIO
 const usuario = "asusvisualdisplay"; 
-const repo = "contenidos";
-const carpeta = "wallpapers";
+const repo = "contenidos"; // Asegúrate que este nombre sea el exacto de tu repo en GitHub
 
 const gallery = document.getElementById('gallery');
+const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('modelSearch');
 
-// 2. Función para obtener archivos automáticamente desde la API de GitHub
-async function cargarWallpapers() {
+let currentFiles = []; // Memoria temporal para la búsqueda
+
+async function showSection(carpeta) {
+    gallery.innerHTML = "<div class='welcome-msg'><h3>Cargando archivos de " + carpeta + "...</h3></div>";
+    searchBar.style.display = "block";
+    
+    // URL de la API de GitHub
     const url = `https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`;
     
     try {
-        const respuesta = await fetch(url);
-        const archivos = await respuesta.json();
+        const response = await fetch(url);
+        const data = await response.json();
 
-        // Filtramos para que solo lea imágenes (jpg, png, webp)
-        const imagenes = archivos.filter(archivo => 
-            archivo.name.match(/\.(jpg|jpeg|png|webp)$/i)
-        );
+        if (response.status === 200) {
+            currentFiles = data.filter(item => item.type === "file");
+            renderList(currentFiles, carpeta);
 
-        renderGallery(imagenes);
-
-        // Escuchar el buscador
-        searchInput.addEventListener('input', (e) => {
-            const filtrados = imagenes.filter(img => 
-                img.name.toLowerCase().includes(e.target.value.toLowerCase())
-            );
-            renderGallery(filtrados);
-        });
-
+            // Activar buscador para esta sección específica
+            searchInput.oninput = (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = currentFiles.filter(f => f.name.toLowerCase().includes(term));
+                renderList(filtered, carpeta);
+            };
+        } else {
+            throw new Error();
+        }
     } catch (error) {
-        console.error("Error al cargar los archivos:", error);
-        gallery.innerHTML = "<p>Error al conectar con la galería.</p>";
+        gallery.innerHTML = "<div class='welcome-msg'><h3>❌ Error</h3><p>No se pudo acceder a la carpeta '" + carpeta + "'. Revisa que el nombre del repo y carpeta sean correctos.</p></div>";
     }
 }
 
-// 3. Función para dibujar las tarjetas
-function renderGallery(lista) {
+function renderList(list, type) {
     gallery.innerHTML = "";
-    
-    lista.forEach(img => {
-        // Limpiamos el nombre del archivo para que se vea bien (quitamos el .jpg)
-        const nombreLimpio = img.name.split('.')[0].replace(/-/g, ' ');
+    if (list.length === 0) {
+        gallery.innerHTML = "<div class='welcome-msg'><p>No hay archivos en esta sección.</p></div>";
+        return;
+    }
 
+    list.forEach(file => {
+        const cleanName = file.name.split('.')[0].replace(/-/g, ' ');
         const card = document.createElement('div');
-        card.className = 'wallpaper-card';
+        card.className = 'card';
+
+        // Si es wallpaper muestra imagen, si no, muestra icono
+        let visualHTML = "";
+        if (type === 'wallpapers') {
+            visualHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
+        } else {
+            let icon = (type === 'software') ? "⚙️" : "📕";
+            visualHTML = `<div class="icon-placeholder">${icon}</div>`;
+        }
+
         card.innerHTML = `
-            <img src="${img.download_url}" alt="${nombreLimpio}" class="preview-img" loading="lazy">
+            ${visualHTML}
             <div class="info">
-                <h3 class="model-name">${nombreLimpio}</h3>
-                <p>Calidad: Alta Resolución</p>
-                <a href="${img.download_url}" download class="download-link">Descargar</a>
+                <h3 style="text-transform: uppercase; font-size: 1rem;">${cleanName}</h3>
+                <a href="${file.download_url}" download class="download-link">DESCARGAR</a>
             </div>
         `;
         gallery.appendChild(card);
     });
 }
-
-// Iniciar proceso
-cargarWallpapers();

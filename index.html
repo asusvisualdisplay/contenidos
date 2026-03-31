@@ -3,25 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual Display Asus</title>
+    <title>AsusVisualDisplay | Centro de Recursos</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <h1>Asus Visual Display</h1>
-        <p>Contenido para tus exhibiciones</p>
+        <h1>🚜 AsusVisualDisplay</h1>
+        <p>Gestión de Contenidos, Software y Manuales</p>
     </header>
 
-    <section class="search-section">
-        <input type="text" id="modelSearch" placeholder="🔍 Busca por modelo (ej: CAT, Komatsu, John Deere...)">
+    <nav class="main-menu">
+        <button onclick="showSection('wallpapers')">🖼️ Wallpapers</button>
+        <button onclick="showSection('software')">💾 Software</button>
+        <button onclick="showSection('manuales')">📚 Manuales</button>
+        <a href="https://drive.google.com/tu-enlace-aqui" target="_blank" class="btn-drive">☁️ Google Drive</a>
+    </nav>
+
+    <section class="search-section" id="searchBar" style="display:none;">
+        <input type="text" id="modelSearch" placeholder="🔍 Buscar en esta sección...">
     </section>
 
-    <main class="gallery-container" id="gallery"></main>
+    <main class="gallery-container" id="gallery">
+        <div class="welcome-msg">
+            <h2>Bienvenido al Portal</h2>
+            <p>Selecciona una categoría en el menú superior para explorar los archivos disponibles.</p>
+        </div>
+    </main>
 
     <footer>
-        <p>© 2026 Visaul Display Asus | Hosting by GitHub Pages</p>
+        <p>© 2026 AsusVisualDisplay | Desarrollado en GitHub Pages</p>
     </footer>
 
     <script src="script.js"></script>
