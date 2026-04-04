@@ -99,3 +99,58 @@ header {
 }
 
 .welcome-msg { grid-column: 1 / -1; text-align: center; padding: 50px; color: #777; }
+
+/* --- ANIMACIONES DE ENTRADA (KEYFRAMES) --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+/* Aplicar animación al Header y Menú al cargar la página */
+header {
+    animation: slideDown 0.8s ease-out;
+}
+
+.main-menu {
+    animation: fadeInUp 1s ease-out;
+}
+
+/* --- ANIMACIÓN PARA LAS TARJETAS (Al aparecer) --- */
+.card {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* --- EFECTOS DE LOS BOTONES AL PRESIONAR --- */
+.main-menu button, .btn-drive {
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto Hover (Pasar el mouse) */
+.main-menu button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+}
+
+/* Efecto Active (Al hacer clic) */
+.main-menu button:active {
+    transform: scale(0.92); /* Se "hunde" un poco */
+    background-color: #d35400; /* Color más oscuro al presionar */
+}
+
+/* Efecto de carga en la galería */
+#gallery {
+    transition: opacity 0.3s ease;
+}

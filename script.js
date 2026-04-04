@@ -9,30 +9,32 @@ const searchInput = document.getElementById('modelSearch');
 let allFiles = []; 
 
 async function showSection(carpeta) {
-    gallery.innerHTML = "<div class='welcome-msg'><h3>Cargando " + carpeta + "...</h3></div>";
-    searchBar.style.display = "block";
+    // Efecto de desvanecimiento de salida
+    gallery.style.opacity = "0";
     
-    const url = `https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`;
-    
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
+    setTimeout(async () => {
+        gallery.innerHTML = "<div class='welcome-msg'><h3>Cargando " + carpeta + "...</h3></div>";
+        searchBar.style.display = "block";
+        
+        const url = `https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`;
+        
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
 
-        if (!Array.isArray(data)) throw new Error();
+            if (!Array.isArray(data)) throw new Error();
 
-        allFiles = data.filter(f => f.type === "file");
-        renderContent(allFiles, carpeta);
+            allFiles = data.filter(f => f.type === "file");
+            renderContent(allFiles, carpeta);
+            
+            // Volver a mostrar con suavidad
+            gallery.style.opacity = "1";
 
-        // Buscador filtrando en vivo
-        searchInput.oninput = (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = allFiles.filter(f => f.name.toLowerCase().includes(val));
-            renderContent(filtered, carpeta);
-        };
-
-    } catch (e) {
-        gallery.innerHTML = `<div class='welcome-msg'><h3>❌ Error</h3><p>No se encontró la carpeta '${carpeta}'. Asegúrate de que exista en GitHub y tenga archivos.</p></div>`;
-    }
+        } catch (e) {
+            gallery.style.opacity = "1";
+            gallery.innerHTML = `<div class='welcome-msg'><h3>❌ Error</h3><p>No se encontró la carpeta '${carpeta}'.</p></div>`;
+        }
+    }, 200); // Pequeña pausa para que se note la transición
 }
 
 function renderContent(list, type) {
