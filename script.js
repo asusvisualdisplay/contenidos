@@ -1,46 +1,44 @@
-// CONFIGURACIÓN DE TU REPOSITORIO
+// CONFIGURACIÓN - IMPORTANTE: AJUSTA ESTOS DOS NOMBRES
 const usuario = "asusvisualdisplay"; 
-const repo = "contenidos"; // Asegúrate que este nombre sea el exacto de tu repo en GitHub
+const repo = "contenidos"; 
 
 const gallery = document.getElementById('gallery');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('modelSearch');
 
-let currentFiles = []; // Memoria temporal para la búsqueda
+let allFiles = []; 
 
 async function showSection(carpeta) {
-    gallery.innerHTML = "<div class='welcome-msg'><h3>Cargando archivos de " + carpeta + "...</h3></div>";
+    gallery.innerHTML = "<div class='welcome-msg'><h3>Cargando " + carpeta + "...</h3></div>";
     searchBar.style.display = "block";
     
-    // URL de la API de GitHub
     const url = `https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`;
     
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const res = await fetch(url);
+        const data = await res.json();
 
-        if (response.status === 200) {
-            currentFiles = data.filter(item => item.type === "file");
-            renderList(currentFiles, carpeta);
+        if (!Array.isArray(data)) throw new Error();
 
-            // Activar buscador para esta sección específica
-            searchInput.oninput = (e) => {
-                const term = e.target.value.toLowerCase();
-                const filtered = currentFiles.filter(f => f.name.toLowerCase().includes(term));
-                renderList(filtered, carpeta);
-            };
-        } else {
-            throw new Error();
-        }
-    } catch (error) {
-        gallery.innerHTML = "<div class='welcome-msg'><h3>❌ Error</h3><p>No se pudo acceder a la carpeta '" + carpeta + "'. Revisa que el nombre del repo y carpeta sean correctos.</p></div>";
+        allFiles = data.filter(f => f.type === "file");
+        renderContent(allFiles, carpeta);
+
+        // Buscador filtrando en vivo
+        searchInput.oninput = (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = allFiles.filter(f => f.name.toLowerCase().includes(val));
+            renderContent(filtered, carpeta);
+        };
+
+    } catch (e) {
+        gallery.innerHTML = `<div class='welcome-msg'><h3>❌ Error</h3><p>No se encontró la carpeta '${carpeta}'. Asegúrate de que exista en GitHub y tenga archivos.</p></div>`;
     }
 }
 
-function renderList(list, type) {
+function renderContent(list, type) {
     gallery.innerHTML = "";
     if (list.length === 0) {
-        gallery.innerHTML = "<div class='welcome-msg'><p>No hay archivos en esta sección.</p></div>";
+        gallery.innerHTML = "<p class='welcome-msg'>Carpeta vacía.</p>";
         return;
     }
 
@@ -49,19 +47,21 @@ function renderList(list, type) {
         const card = document.createElement('div');
         card.className = 'card';
 
-        // Si es wallpaper muestra imagen, si no, muestra icono
-        let visualHTML = "";
+        // Lógica de Imagen vs Icono
+        let visual = "";
         if (type === 'wallpapers') {
-            visualHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
+            // INTENTO DE MINIATURA: Busca en carpeta 'thumbs' si existe, si no usa el original
+            const thumbUrl = file.download_url.replace('/wallpapers/', '/thumbs/');
+            visual = `<img src="${thumbUrl}" onerror="this.src='${file.download_url}'" class="preview-img" loading="lazy">`;
         } else {
-            let icon = (type === 'demos') ? "⚙️" : "📕";
-            visualHTML = `<div class="icon-placeholder">${icon}</div>`;
+            let icon = (type === 'demos') ? "💾" : "📕";
+            visual = `<div style="font-size:50px; padding:30px; background:#f9f9f9; text-align:center">${icon}</div>`;
         }
 
         card.innerHTML = `
-            ${visualHTML}
+            ${visual}
             <div class="info">
-                <h3 style="text-transform: uppercase; font-size: 1rem;">${cleanName}</h3>
+                <h3 style="font-size:0.9rem; margin:0">${cleanName}</h3>
                 <a href="${file.download_url}" download class="download-link">DESCARGAR</a>
             </div>
         `;
