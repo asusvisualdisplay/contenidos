@@ -11,6 +11,7 @@ body {
     background-color: var(--bg);
     color: #fff;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* Navbar Flotante */
@@ -25,7 +26,7 @@ body {
 }
 
 .navbar-glass {
-    background: rgba(10, 10, 10, 0.8);
+    background: rgba(15, 15, 15, 0.8);
     backdrop-filter: blur(15px);
     border: 1px solid var(--border);
     padding: 10px 25px;
@@ -42,24 +43,24 @@ body {
 
 /* Hero Section */
 .hero-section {
-    height: 90vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-image: radial-gradient(circle at center, #111 0%, #000 70%);
+    background: radial-gradient(circle at center, #111 0%, #000 80%);
 }
 
-.hero-title { font-size: 4.5rem; line-height: 1; margin: 20px 0; font-weight: 700; }
-.hero-title span { opacity: 0.5; }
+.hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; margin: 20px 0; font-weight: 700; }
+.hero-title span { opacity: 0.4; }
 
 .badge {
     background: var(--glass);
     border: 1px solid var(--border);
-    padding: 5px 15px;
+    padding: 6px 18px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--accent);
 }
 
@@ -67,7 +68,7 @@ body {
 .hero-buttons { display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
 
 .btn-main, .btn-outline {
-    padding: 15px 35px;
+    padding: 14px 32px;
     border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
@@ -75,8 +76,9 @@ body {
 }
 
 .btn-main { background: #fff; color: #000; border: none; }
-.btn-outline { background: var(--glass); color: #fff; border: 1px solid var(--border); }
-.btn-main:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+.btn-outline { background: var(--glass); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(5px); }
+
+.btn-main:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,255,255,0.2); }
 
 /* Buscador Minimalista */
 .search-wrapper { width: 100%; display: flex; justify-content: center; margin-top: 20px; }
@@ -84,7 +86,7 @@ body {
     background: var(--glass);
     border: 1px solid var(--border);
     color: #fff;
-    padding: 15px 30px;
+    padding: 16px 30px;
     border-radius: 50px;
     width: 80%;
     max-width: 500px;
@@ -97,20 +99,22 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
-    padding: 50px;
+    padding: 60px 40px;
     background: #000;
 }
 
 .card {
-    background: #111;
+    background: #0a0a0a;
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: 0.3s;
+    transition: 0.4s;
 }
 
 .card:hover { border-color: #fff; transform: translateY(-10px); }
 
 .preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
 .info { padding: 20px; text-align: center; }
-.download-link { color: #fff; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+.download-link { color: var(--accent); text-decoration: none; font-weight: bold; font-size: 0.85rem; }
+
+footer { text-align: center; padding: 40px; opacity: 0.4; font-size: 0.8rem; }
