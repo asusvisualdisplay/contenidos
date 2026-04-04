@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AsusVisualDisplay | Portal Premium</title>
+    <title>AsusVisualDisplay | Portal de Contenidos</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <div class="beams-container">
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
     <header class="navbar-container">
         <div class="navbar-glass">
-            <div class="logo">🚜 AsusVisualDisplay</div>
+            <div class="logo">AsusVisualDisplay</div>
+            
+            <div class="nav-search-container" id="navSearchWrapper">
+                <input type="text" id="modelSearch" placeholder="🔍 Buscador de contenidos">
+            </div>
+
             <nav class="nav-links">
                 <a href="#" onclick="location.reload()">Inicio</a>
                 <a href="https://drive.google.com" target="_blank">Drive</a>
@@ -20,25 +32,20 @@
     </header>
 
     <main class="hero-section">
-        <div class="badge">✨ +150 Wallpapers y creciendo</div>
-        
-        <h1 class="hero-title">Siente el poder <br><span>de la maquinaria.</span></h1>
+        <div class="badge">Contenidos visual disponible</div>
+        <h1 class="hero-title">In Search <br><span>of Incredible</span></h1>
 
         <div class="hero-buttons">
-            <button class="btn-main" onclick="showSection('wallpapers')">Ver Wallpapers</button>
-            <button class="btn-outline" onclick="showSection('demos')">Demos de Software</button>
+            <button class="btn-main" onclick="showSection('wallpapers')">Explorar Wallpapers</button>
+            <button class="btn-outline" onclick="showSection('demos')">Demos</button>
             <button class="btn-outline" onclick="showSection('manuales')">Manuales</button>
-        </div>
-
-        <div class="search-wrapper" id="searchContainer" style="display: none;">
-            <input type="text" id="modelSearch" placeholder="🔍 Busca por modelo (ej: CAT, Komatsu...)">
         </div>
     </main>
 
     <div class="gallery-container" id="gallery"></div>
 
     <footer>
-        <p>© 2026 AsusVisualDisplay | Centro de Recursos Digitales</p>
+        <p>© 2026 AsusVisualDisplay | 🚜</p>
     </footer>
 
     <script src="script.js"></script>

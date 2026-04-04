@@ -1,16 +1,23 @@
+// CONFIGURACIÓN DE TU REPOSITORIO
 const usuario = "asusvisualdisplay"; 
-const repo = "contenidos"; // Asegúrate de que este sea el nombre exacto de tu repo
+const repo = "contenidos"; 
 
 const gallery = document.getElementById('gallery');
-const searchContainer = document.getElementById('searchContainer');
+const navSearchWrapper = document.getElementById('navSearchWrapper');
 const searchInput = document.getElementById('modelSearch');
 
 async function showSection(carpeta) {
-    searchContainer.style.display = "flex";
-    gallery.style.minHeight = "100vh";
-    window.scrollTo({ top: window.innerHeight - 50, behavior: 'smooth' });
+    // Activar buscador en Navbar
+    navSearchWrapper.style.display = "block";
     
-    gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.6;'>Cargando archivos...</p>";
+    // Scroll suave hacia abajo para mostrar resultados
+    gallery.style.minHeight = "100vh";
+    window.scrollTo({ 
+        top: window.innerHeight - 80, 
+        behavior: 'smooth' 
+    });
+    
+    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5;'>Sincronizando con el servidor industrial...</div>";
 
     try {
         const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
@@ -18,41 +25,49 @@ async function showSection(carpeta) {
 
         if (!Array.isArray(files)) throw new Error();
 
-        const listaFiltrada = files.filter(f => f.type === "file");
-        render(listaFiltrada, carpeta);
+        const listaArchivos = files.filter(f => f.type === "file");
+        renderContent(listaArchivos, carpeta);
 
+        // Buscador vinculado a la Navbar
         searchInput.oninput = (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = listaFiltrada.filter(f => f.name.toLowerCase().includes(term));
-            render(filtered, carpeta);
+            const val = e.target.value.toLowerCase();
+            const filtrados = listaArchivos.filter(f => f.name.toLowerCase().includes(val));
+            renderContent(filtrados, carpeta);
         };
 
     } catch (e) {
-        gallery.innerHTML = "<p style='text-align:center; width:100%; color:#e74c3c;'>Error: Revisa que la carpeta '" + carpeta + "' exista y el repo sea público.</p>";
+        gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; color:#ff4444;'>❌ Error: Asegúrate de que la carpeta exista en GitHub.</div>";
     }
 }
 
-function render(list, type) {
+function renderContent(list, type) {
     gallery.innerHTML = "";
+    
     if (list.length === 0) {
-        gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.5;'>No hay archivos aquí.</p>";
+        gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.5; padding:50px;'>No se encontraron resultados.</p>";
         return;
     }
 
     list.forEach(file => {
         const card = document.createElement('div');
         card.className = 'card';
-        const cleanName = file.name.split('.')[0].replace(/-/g, ' ');
+        
+        // Limpiar el nombre para el título
+        const cleanName = file.name.split('.')[0].replace(/-/g, ' ').toUpperCase();
 
-        let media = (type === 'wallpapers') 
-            ? `<img src="${file.download_url}" class="preview-img" loading="lazy">`
-            : `<div style="font-size:50px; padding:50px; text-align:center;">📄</div>`;
+        let mediaHTML = "";
+        if (type === 'wallpapers') {
+            mediaHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
+        } else {
+            let icon = (type === 'demos') ? "💾" : "📄";
+            mediaHTML = `<div style="font-size:60px; padding:60px; text-align:center; background:#050505;">${icon}</div>`;
+        }
 
         card.innerHTML = `
-            ${media}
+            ${mediaHTML}
             <div class="info">
-                <h3 style="font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">${cleanName}</h3>
-                <a href="${file.download_url}" download class="download-link">DESCARGAR</a>
+                <h3>${cleanName}</h3>
+                <a href="${file.download_url}" download="${file.name}" class="download-link">DESCARGAR</a>
             </div>
         `;
         gallery.appendChild(card);
