@@ -1,156 +1,116 @@
 :root {
-    --primary: #f39c12; 
-    --dark: #1a1a1a;
-    --light: #f4f4f4;
-    --white: #ffffff;
+    --bg: #000000;
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #f39c12;
 }
 
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: var(--light);
+    background-color: var(--bg);
+    color: #fff;
+    scroll-behavior: smooth;
 }
 
-header {
-    background-color: var(--dark);
-    color: var(--primary);
-    text-align: center;
-    padding: 30px 20px;
-    border-bottom: 5px solid var(--primary);
-}
-
-/* Menú Pegajoso */
-.main-menu {
+/* Navbar Flotante */
+.navbar-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    padding: 15px;
-    background: #222;
-    position: sticky;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
     top: 0;
     z-index: 1000;
-    flex-wrap: wrap;
 }
 
-.main-menu button, .btn-drive {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary);
-    color: var(--dark);
+.navbar-glass {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    padding: 10px 25px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 900px;
+}
+
+.nav-links a { color: #fff; text-decoration: none; margin-left: 20px; opacity: 0.6; transition: 0.3s; }
+.nav-links a:hover { opacity: 1; }
+
+/* Hero Section */
+.hero-section {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: radial-gradient(circle at center, #111 0%, #000 70%);
+}
+
+.hero-title { font-size: 4.5rem; line-height: 1; margin: 20px 0; font-weight: 700; }
+.hero-title span { opacity: 0.5; }
+
+.badge {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+/* Botones Pastilla */
+.hero-buttons { display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
+
+.btn-main, .btn-outline {
+    padding: 15px 35px;
+    border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.main-menu button:hover { background: var(--white); }
-
-.search-section { text-align: center; padding: 15px; background: var(--white); }
-
-#modelSearch {
-    width: 90%;
-    max-width: 500px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-}
-
-/* Grilla Optimizada */
-.gallery-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    max-width: 1300px;
-    margin: auto;
-}
-
-.card {
-    background: var(--white);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: 0.3s;
 }
 
-.card:hover { transform: translateY(-5px); }
+.btn-main { background: #fff; color: #000; border: none; }
+.btn-outline { background: var(--glass); color: #fff; border: 1px solid var(--border); }
+.btn-main:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
 
-/* Truco de carga rápida */
-.preview-img {
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Reserva el espacio antes de cargar */
-    object-fit: cover;
-    display: block;
-    background: #eee; /* Skeleton effect */
+/* Buscador Minimalista */
+.search-wrapper { width: 100%; display: flex; justify-content: center; margin-top: 20px; }
+#modelSearch {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 50px;
+    width: 80%;
+    max-width: 500px;
+    outline: none;
+    text-align: center;
 }
 
-.info { padding: 15px; text-align: center; }
-
-.download-link {
-    display: block;
-    background: var(--dark);
-    color: var(--primary);
-    text-decoration: none;
-    padding: 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    margin-top: 10px;
+/* Galería */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 50px;
+    background: #000;
 }
 
-.welcome-msg { grid-column: 1 / -1; text-align: center; padding: 50px; color: #777; }
-
-/* --- ANIMACIONES DE ENTRADA (KEYFRAMES) --- */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
-
-/* Aplicar animación al Header y Menú al cargar la página */
-header {
-    animation: slideDown 0.8s ease-out;
-}
-
-.main-menu {
-    animation: fadeInUp 1s ease-out;
-}
-
-/* --- ANIMACIÓN PARA LAS TARJETAS (Al aparecer) --- */
 .card {
-    animation: fadeInUp 0.5s ease-out forwards;
-}
-
-/* --- EFECTOS DE LOS BOTONES AL PRESIONAR --- */
-.main-menu button, .btn-drive {
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
+    background: #111;
+    border-radius: 20px;
     overflow: hidden;
+    border: 1px solid var(--border);
+    transition: 0.3s;
 }
 
-/* Efecto Hover (Pasar el mouse) */
-.main-menu button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
-}
+.card:hover { border-color: #fff; transform: translateY(-10px); }
 
-/* Efecto Active (Al hacer clic) */
-.main-menu button:active {
-    transform: scale(0.92); /* Se "hunde" un poco */
-    background-color: #d35400; /* Color más oscuro al presionar */
-}
-
-/* Efecto de carga en la galería */
-#gallery {
-    transition: opacity 0.3s ease;
-}
+.preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.info { padding: 20px; text-align: center; }
+.download-link { color: #fff; text-decoration: none; font-weight: bold; font-size: 0.9rem; }

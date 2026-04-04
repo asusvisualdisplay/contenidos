@@ -9,32 +9,33 @@
 </head>
 <body>
 
-    <header>
-        <h1>AsusVisualDisplay</h1>
-        <p>Gestión de Contenidos, Demos y Manuales</p>
+    <header class="navbar-container">
+        <div class="navbar-glass">
+            <div class="logo">🚜 AsusVisualDisplay</div>
+            <nav class="nav-links">
+                <a href="#" onclick="location.reload()">Inicio</a>
+                <a href="https://drive.google.com" target="_blank">Drive</a>
+            </nav>
+        </div>
     </header>
 
-    <nav class="main-menu">
-        <button onclick="showSection('wallpapers')">🖼️ Wallpapers</button>
-        <button onclick="showSection('demos')">💾 Demos</button>
-        <button onclick="showSection('manuales')">📚 Manuales</button>
-        <a href="https://drive.google.com/tu-link-aqui" target="_blank" class="btn-drive">☁️ Google Drive</a>
-    </nav>
+    <main class="hero-section">
+        <div class="badge">Contenido Visual</div>
+        
+        <h1 class="hero-title">Portal de contenido <br><span>visual</span></h1>
 
-    <section class="search-section" id="searchBar" style="display:none;">
-        <input type="text" id="modelSearch" placeholder="🔍 Buscar en esta sección...">
-    </section>
+        <div class="hero-buttons">
+            <button class="btn-main" onclick="showSection('wallpapers')">Wallpapers</button>
+            <button class="btn-outline" onclick="showSection('demos')">Software Demos</button>
+            <button class="btn-outline" onclick="showSection('manuales')">Manuales</button>
+        </div>
 
-<main class="gallery-container" id="gallery">
-    <div class="welcome-msg" style="animation: fadeInUp 1.5s ease-in-out;">
-        <h2>AsusVisualDisplay</h2>
-        <p>Tu centro de recursos está listo. Elige una categoría para empezar.</p>
-    </div>
-</main>
+        <div class="search-wrapper" id="searchContainer" style="display: none;">
+            <input type="text" id="modelSearch" placeholder="🔍 Busca el contenido">
+        </div>
+    </main>
 
-    <footer>
-        <p>© 2026 AsusVisualDisplay | Proyecto Tractor 🚜</p>
-    </footer>
+    <div class="gallery-container" id="gallery"></div>
 
     <script src="script.js"></script>
 </body>
