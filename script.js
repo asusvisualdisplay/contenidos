@@ -1,4 +1,3 @@
-// CONFIGURACIÓN DE TU REPOSITORIO
 const usuario = "asusvisualdisplay"; 
 const repo = "contenidos"; 
 
@@ -7,69 +6,90 @@ const navSearchWrapper = document.getElementById('navSearchWrapper');
 const searchInput = document.getElementById('modelSearch');
 
 async function showSection(carpeta) {
-    // Activar buscador en Navbar
     navSearchWrapper.style.display = "block";
-    
-    // Scroll suave hacia abajo para mostrar resultados
     gallery.style.minHeight = "100vh";
-    window.scrollTo({ 
-        top: window.innerHeight - 80, 
-        behavior: 'smooth' 
-    });
+    window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' });
     
-    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5;'>Sincronizando con el servidor industrial...</div>";
+    gallery.innerHTML = "<p style='text-align:center; width:100%; padding:50px; opacity:0.5;'>Cargando portal...</p>";
 
     try {
         const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
         const files = await res.json();
-
-        if (!Array.isArray(files)) throw new Error();
-
         const listaArchivos = files.filter(f => f.type === "file");
-        renderContent(listaArchivos, carpeta);
 
-        // Buscador vinculado a la Navbar
+        let extraHTML = "";
+        if (carpeta === 'wallpapers' && listaArchivos.length > 0) {
+            extraHTML = `
+                <div class="download-all-container">
+                    <button class="btn-download-all" onclick="downloadZip()">
+                        📦 DESCARGAR TODO EL PACK (.ZIP)
+                    </button>
+                </div>`;
+        }
+
+        render(listaArchivos, carpeta, extraHTML);
+
         searchInput.oninput = (e) => {
             const val = e.target.value.toLowerCase();
             const filtrados = listaArchivos.filter(f => f.name.toLowerCase().includes(val));
-            renderContent(filtrados, carpeta);
+            render(filtrados, carpeta, extraHTML);
         };
 
     } catch (e) {
-        gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; color:#ff4444;'>❌ Error: Asegúrate de que la carpeta exista en GitHub.</div>";
+        gallery.innerHTML = "<p style='text-align:center; color:red; padding:50px;'>Error de conexión.</p>";
     }
 }
 
-function renderContent(list, type) {
-    gallery.innerHTML = "";
-    
-    if (list.length === 0) {
-        gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.5; padding:50px;'>No se encontraron resultados.</p>";
-        return;
-    }
+async function downloadZip() {
+    const btn = document.querySelector('.btn-download-all');
+    const links = document.querySelectorAll('.download-link');
+    if (links.length === 0) return;
 
+    if (!confirm(`Se comprimirán ${links.length} imágenes. Esto tomará un momento.`)) return;
+
+    btn.innerHTML = "🌀 Comprimiendo...";
+    btn.disabled = true;
+
+    const zip = new JSZip();
+    try {
+        const promises = Array.from(links).map(async (link) => {
+            const res = await fetch(link.href);
+            const blob = await res.blob();
+            const name = link.getAttribute('data-name') || "img_" + Math.random().toString(36).substr(2, 5) + ".jpg";
+            zip.file(name, blob);
+        });
+
+        await Promise.all(promises);
+        const content = await zip.generateAsync({ type: "blob" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "Pack_Wallpapers_AsusVisualDisplay.zip";
+        a.click();
+    } catch (e) {
+        alert("Error al crear el ZIP.");
+    } finally {
+        btn.innerHTML = "📦 DESCARGAR TODO EL PACK (.ZIP)";
+        btn.disabled = false;
+    }
+}
+
+function render(list, type, extraHTML) {
+    gallery.innerHTML = extraHTML;
     list.forEach(file => {
         const card = document.createElement('div');
         card.className = 'card';
+        const name = file.name.split('.')[0].replace(/-/g, ' ').toUpperCase();
         
-        // Limpiar el nombre para el título
-        const cleanName = file.name.split('.')[0].replace(/-/g, ' ').toUpperCase();
-
-        let mediaHTML = "";
-        if (type === 'wallpapers') {
-            mediaHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
-        } else {
-            let icon = (type === 'demos') ? "💾" : "📄";
-            mediaHTML = `<div style="font-size:60px; padding:60px; text-align:center; background:#050505;">${icon}</div>`;
-        }
+        let visual = (type === 'wallpapers') 
+            ? `<img src="${file.download_url}" class="preview-img" loading="lazy">`
+            : `<div style="font-size:50px; padding:50px; text-align:center; background:#050505;">📄</div>`;
 
         card.innerHTML = `
-            ${mediaHTML}
+            ${visual}
             <div class="info">
-                <h3>${cleanName}</h3>
-                <a href="${file.download_url}" download="${file.name}" class="download-link">DESCARGAR</a>
-            </div>
-        `;
+                <h3>${name}</h3>
+                <a href="${file.download_url}" data-name="${file.name}" class="download-link">DESCARGAR</a>
+            </div>`;
         gallery.appendChild(card);
     });
 }
