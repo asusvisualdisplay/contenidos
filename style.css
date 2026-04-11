@@ -1,6 +1,6 @@
 :root {
     --bg: #030303;
-    --accent: #f39c12;
+    --accent: #f39c12; /* Naranja Industrial Asus */
     --glass: rgba(255, 255, 255, 0.03);
     --border: rgba(255, 255, 255, 0.1);
 }
@@ -18,12 +18,9 @@ body {
     color: #fff;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
-/* --- EFECTO BEAMS (Fondo Animado) --- */
+/* --- EFECTO BEAMS (Fondo Animado Estilo React Bits) --- */
 .beams-container {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -57,11 +54,11 @@ body {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* --- NAVBAR (Cápsula Superior) --- */
+/* --- NAVBAR COMPACTA --- */
 .navbar-container {
     display: flex;
     justify-content: center;
-    padding: 15px 10px;
+    padding: 12px 10px;
     position: fixed;
     width: 100%;
     top: 0;
@@ -73,7 +70,7 @@ body {
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--border);
-    padding: 8px 20px;
+    padding: 8px 18px;
     border-radius: 50px;
     display: flex;
     justify-content: space-between;
@@ -81,7 +78,7 @@ body {
     width: auto;
     min-width: 320px;
     max-width: 95%;
-    gap: 15px;
+    gap: 10px;
 }
 
 .logo {
@@ -91,11 +88,10 @@ body {
     flex-shrink: 0;
 }
 
-/* Contenedor del Buscador en Navbar */
 .nav-search-container {
     flex-grow: 1;
-    max-width: 160px; /* Límite para no empujar botones */
-    display: none; /* Se activa por JS */
+    max-width: 160px;
+    display: none; 
 }
 
 #modelSearch {
@@ -111,7 +107,7 @@ body {
 
 .nav-links {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
@@ -121,19 +117,16 @@ body {
     font-size: 0.75rem;
     font-weight: 600;
     opacity: 0.7;
-    transition: 0.3s;
 }
-
-.nav-links a:hover { opacity: 1; color: var(--accent); }
 
 /* --- HERO SECTION (Centrado Total) --- */
 .hero-section {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 80px 20px;
+    padding: 0 20px;
 }
 
 .hero-content-wrapper {
@@ -141,7 +134,6 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 900px;
 }
 
 .badge-msg {
@@ -154,16 +146,16 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 10vw, 5.5rem);
+    font-size: clamp(2.5rem, 10vw, 5rem);
     font-weight: 800;
     line-height: 1.1;
     margin: 0 0 40px 0;
-    letter-spacing: -3px;
+    letter-spacing: -2px;
 }
 
 .hero-title span { color: rgba(255,255,255,0.2); }
 
-/* --- BOTONES PREMIUM --- */
+/* --- BOTONES DE SECCIÓN --- */
 .hero-buttons {
     display: flex;
     gap: 15px;
@@ -176,12 +168,11 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
-    padding: 14px 30px;
+    padding: 14px 35px;
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -189,11 +180,10 @@ body {
 .btn-outline:hover {
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-5px) scale(1.05);
+    transform: translateY(-5px);
 }
 
-/* --- BOTÓN ZIP --- */
+/* --- BOTÓN DESCARGAR PACK ZIP --- */
 .download-all-container {
     width: 100%;
     display: flex;
@@ -210,11 +200,10 @@ body {
     font-weight: 800;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: 0.3s;
     box-shadow: 0 5px 20px rgba(243, 156, 18, 0.3);
 }
 
-/* --- GALERÍA --- */
+/* --- GALERÍA Y BOTONES DE DESCARGA --- */
 .gallery-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -224,28 +213,58 @@ body {
 
 .card {
     background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(5px);
-    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
     overflow: hidden;
     border: 1px solid var(--border);
     transition: 0.4s;
 }
 
-.card:hover { transform: translateY(-10px); border-color: #fff; }
+.card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.4); }
 
 .preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-.info { padding: 20px; text-align: center; }
 
-/* --- RESPONSIVO --- */
+.info { 
+    padding: 25px; 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.info h3 { font-size: 0.85rem; margin: 0; opacity: 0.9; letter-spacing: 1px; }
+
+/* Botón de descarga individual estilizado */
+.download-link {
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: 1px solid var(--accent);
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.download-link:hover {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 20px rgba(243, 156, 18, 0.4);
+}
+
+/* --- MEDIA QUERIES --- */
 @media (max-width: 768px) {
     .navbar-glass { width: 98%; min-width: 290px; }
-    .nav-search-container { max-width: 100px; }
-    
+    .nav-search-container { max-width: 110px; }
     .hero-title { font-size: 2.8rem; }
     .hero-buttons { flex-direction: column; width: 100%; max-width: 280px; }
     .btn-outline { width: 100%; }
-
     .gallery-container { grid-template-columns: 1fr; padding: 20px; }
 }
 
-footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.75rem; margin-top: auto; }
+footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.75rem; }
