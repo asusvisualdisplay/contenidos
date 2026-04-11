@@ -46,4 +46,206 @@ body {
 .grid-overlay {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(rgba(255,255,2
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(circle at center, black, transparent 85%);
+}
+
+@keyframes rotateBeams {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* --- NAVBAR (Cápsula Superior) --- */
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 2000;
+}
+
+.navbar-glass {
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--border);
+    padding: 8px 20px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    min-width: 320px;
+    max-width: 95%;
+    gap: 15px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Contenedor del Buscador en Navbar */
+.nav-search-container {
+    flex-grow: 1;
+    max-width: 160px; /* Límite para no empujar botones */
+    display: none; /* Se activa por JS */
+}
+
+#modelSearch {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 50px;
+    outline: none;
+    font-size: 0.75rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.nav-links a:hover { opacity: 1; color: var(--accent); }
+
+/* --- HERO SECTION (Centrado Total) --- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+.badge-msg {
+    opacity: 0.6;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 10vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 40px 0;
+    letter-spacing: -3px;
+}
+
+.hero-title span { color: rgba(255,255,255,0.2); }
+
+/* --- BOTONES PREMIUM --- */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.05);
+}
+
+/* --- BOTÓN ZIP --- */
+.download-all-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.btn-download-all {
+    background: linear-gradient(90deg, var(--accent), #ffcc33);
+    color: #000;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 20px rgba(243, 156, 18, 0.3);
+}
+
+/* --- GALERÍA --- */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 60px 40px;
+}
+
+.card {
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: 0.4s;
+}
+
+.card:hover { transform: translateY(-10px); border-color: #fff; }
+
+.preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.info { padding: 20px; text-align: center; }
+
+/* --- RESPONSIVO --- */
+@media (max-width: 768px) {
+    .navbar-glass { width: 98%; min-width: 290px; }
+    .nav-search-container { max-width: 100px; }
+    
+    .hero-title { font-size: 2.8rem; }
+    .hero-buttons { flex-direction: column; width: 100%; max-width: 280px; }
+    .btn-outline { width: 100%; }
+
+    .gallery-container { grid-template-columns: 1fr; padding: 20px; }
+}
+
+footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.75rem; margin-top: auto; }
