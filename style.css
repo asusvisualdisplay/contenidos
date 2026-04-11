@@ -1,14 +1,10 @@
 :root {
     --bg: #030303;
-    --accent: #f39c12; /* Naranja Industrial Asus */
-    --glass: rgba(255, 255, 255, 0.03);
+    --accent: #f39c12;
     --border: rgba(255, 255, 255, 0.1);
 }
 
-/* --- RESET Y BASE --- */
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -20,33 +16,52 @@ body {
     scroll-behavior: smooth;
 }
 
-/* --- EFECTO BEAMS (Fondo Animado Estilo React Bits) --- */
+/* --- EFECTO DE LÍNEAS DINÁMICAS (React Bits Style) --- */
+.bg-lines-container {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    opacity: 0.5;
+}
+
+.line {
+    position: absolute;
+    width: 1px;
+    height: 100vh;
+    top: -100%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15), transparent);
+    animation: dropLine 8s infinite linear;
+}
+
+/* Distribución de líneas */
+.line:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 7s; }
+.line:nth-child(2) { left: 30%; animation-delay: 2s; animation-duration: 9s; }
+.line:nth-child(3) { left: 50%; animation-delay: 4s; animation-duration: 6s; }
+.line:nth-child(4) { left: 70%; animation-delay: 1s; animation-duration: 10s; }
+.line:nth-child(5) { left: 85%; animation-delay: 3s; animation-duration: 8s; }
+.line:nth-child(6) { left: 95%; animation-delay: 5s; animation-duration: 11s; }
+
+@keyframes dropLine {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(200vh); }
+}
+
+/* --- BEAMS BACKGROUND --- */
 .beams-container {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    inset: 0;
     z-index: -1;
     overflow: hidden;
-    background: radial-gradient(circle at 50% -20%, #151515, #000);
+    background: radial-gradient(circle at 50% -20%, #1a1a1a, #000);
 }
 
 .beam {
     position: absolute;
-    top: -50%; left: 50%;
-    width: 200%; height: 200%;
+    top: -50%; left: 50%; width: 200%; height: 200%;
     background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.03) 180deg, transparent 360deg);
     animation: rotateBeams 25s linear infinite;
     transform-origin: center;
-}
-
-.beam:nth-child(2) { animation-duration: 40s; opacity: 0.4; animation-direction: reverse; }
-
-.grid-overlay {
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), 
-                      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
-    mask-image: radial-gradient(circle at center, black, transparent 85%);
 }
 
 @keyframes rotateBeams {
@@ -54,217 +69,99 @@ body {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* --- NAVBAR COMPACTA --- */
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+}
+
+/* --- NAVBAR --- */
 .navbar-container {
-    display: flex;
-    justify-content: center;
-    padding: 12px 10px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 2000;
+    display: flex; justify-content: center; padding: 15px 10px;
+    position: fixed; width: 100%; top: 0; z-index: 2000;
 }
 
 .navbar-glass {
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border);
-    padding: 8px 18px;
-    border-radius: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: auto;
-    min-width: 320px;
-    max-width: 95%;
-    gap: 10px;
+    padding: 10px 22px; border-radius: 50px;
+    display: flex; justify-content: space-between; align-items: center;
+    width: auto; min-width: 320px; max-width: 95%; gap: 15px;
 }
 
-.logo {
-    font-weight: 800;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.nav-search-container {
-    flex-grow: 1;
-    max-width: 160px;
-    display: none; 
-}
-
+.logo { font-weight: 800; font-size: 0.9rem; }
+.nav-search-container { flex-grow: 1; max-width: 150px; display: none; }
 #modelSearch {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--border);
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 50px;
-    outline: none;
-    font-size: 0.75rem;
+    width: 100%; background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border); color: #fff;
+    padding: 7px 15px; border-radius: 50px; outline: none; font-size: 0.75rem;
 }
 
-.nav-links {
-    display: flex;
-    gap: 12px;
-    flex-shrink: 0;
-}
+.nav-links a { color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 600; opacity: 0.7; margin-left: 10px; }
 
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 600;
-    opacity: 0.7;
-}
-
-/* --- HERO SECTION (Centrado Total) --- */
+/* --- HERO SECTION --- */
 .hero-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 20px;
+    height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 20px;
 }
 
-.hero-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
+.hero-content-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
 
-.badge-msg {
-    opacity: 0.6;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
+.badge-msg { opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; font-size: 0.7rem; margin-bottom: 10px; }
 
 .hero-title {
-    font-size: clamp(2.5rem, 10vw, 5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin: 0 0 40px 0;
-    letter-spacing: -2px;
+    font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 800; line-height: 1.1; margin: 0 0 30px 0;
 }
+.hero-title span { opacity: 0.2; }
 
-.hero-title span { color: rgba(255,255,255,0.2); }
-
-/* --- BOTONES DE SECCIÓN --- */
-.hero-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+/* --- BOTONES PREMIUM --- */
+.hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
 .btn-outline {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-    padding: 14px 35px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #fff; padding: 14px 35px; border-radius: 50px;
+    font-weight: 700; cursor: pointer; transition: 0.3s;
+    text-transform: uppercase; font-size: 0.8rem;
 }
 
-.btn-outline:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    transform: translateY(-5px);
-}
+.btn-outline:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-5px); }
 
-/* --- BOTÓN DESCARGAR PACK ZIP --- */
-.download-all-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 30px 0;
-}
-
-.btn-download-all {
-    background: linear-gradient(90deg, var(--accent), #ffcc33);
-    color: #000;
-    border: none;
-    padding: 14px 30px;
-    border-radius: 50px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    cursor: pointer;
-    box-shadow: 0 5px 20px rgba(243, 156, 18, 0.3);
-}
-
-/* --- GALERÍA Y BOTONES DE DESCARGA --- */
-.gallery-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 60px 40px;
-}
+/* --- GALERÍA Y TARJETAS --- */
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding: 60px 40px; }
 
 .card {
     background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    transition: 0.4s;
+    backdrop-filter: blur(12px);
+    border-radius: 24px; border: 1px solid var(--border);
+    overflow: hidden; transition: 0.4s ease-out;
 }
 
-.card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.4); }
+.card:hover { transform: translateY(-10px); border-color: var(--accent); }
 
-.preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.info { padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
-.info { 
-    padding: 25px; 
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.info h3 { font-size: 0.85rem; margin: 0; opacity: 0.9; letter-spacing: 1px; }
-
-/* Botón de descarga individual estilizado */
+/* BOTÓN DESCARGA MEJORADO */
 .download-link {
     display: inline-block;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 12px 30px;
-    border-radius: 50px;
-    border: 1px solid var(--accent);
-    background: transparent;
-    transition: all 0.3s ease;
+    color: #fff; text-decoration: none; font-weight: 800;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+    padding: 12px 25px; border-radius: 50px;
+    border: 1px solid var(--accent); background: transparent;
+    transition: 0.3s;
 }
 
-.download-link:hover {
-    background: var(--accent);
-    color: #000;
-    box-shadow: 0 0 20px rgba(243, 156, 18, 0.4);
-}
+.download-link:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px rgba(243, 156, 18, 0.4); }
 
-/* --- MEDIA QUERIES --- */
+/* MÓVIL */
 @media (max-width: 768px) {
-    .navbar-glass { width: 98%; min-width: 290px; }
-    .nav-search-container { max-width: 110px; }
+    .navbar-glass { min-width: 290px; }
     .hero-title { font-size: 2.8rem; }
     .hero-buttons { flex-direction: column; width: 100%; max-width: 280px; }
     .btn-outline { width: 100%; }
-    .gallery-container { grid-template-columns: 1fr; padding: 20px; }
 }
-
-footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.75rem; }
