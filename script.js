@@ -22,7 +22,7 @@ async function showSection(carpeta) {
             extraHTML = `
                 <div class="download-all-container">
                     <button class="btn-download-all" onclick="downloadZip()">
-                        📦 DESCARGAR TODO EL PACK (.ZIP)
+                        📦 Descarga Todos Los Wallpapers (.ZIP)
                     </button>
                 </div>`;
         }
@@ -68,7 +68,7 @@ async function downloadZip() {
     } catch (e) {
         alert("Error al crear el ZIP.");
     } finally {
-        btn.innerHTML = "📦 DESCARGAR TODO EL PACK (.ZIP)";
+        btn.innerHTML = "📦 Descarga Todos Los Wallpapers (.ZIP)";
         btn.disabled = false;
     }
 }
