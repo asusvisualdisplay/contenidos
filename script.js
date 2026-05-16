@@ -27,7 +27,7 @@ async function showSection(carpeta) {
     gallery.style.minHeight = "100vh";
     window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' });
     
-    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem; letter-spacing:1px;'>CARGANDO PORTAL INDUSTRIAL...</div>";
+    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem; letter-spacing:1px;'>CARGANDO LISTA DE WALLPAPERS...</div>";
     zipContainer.innerHTML = ""; 
 
     try {
