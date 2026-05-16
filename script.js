@@ -8,6 +8,7 @@ const zipContainer = document.getElementById('zip-button-container');
 const heroMain = document.getElementById('hero-main');
 const requestSection = document.getElementById('request-section');
 
+// DESPLIEGA EL FORMULARIO DE PEDIDO OCULTANDO EL INICIO
 function openRequestForm() {
     heroMain.style.display = "none";
     gallery.innerHTML = "";
@@ -18,16 +19,19 @@ function openRequestForm() {
 }
 
 async function showSection(carpeta) {
+    // Asegurar limpieza de estados y alternancia de vistas
     requestSection.style.display = "none";
     heroMain.style.display = "flex";
+    
     navSearchWrapper.style.display = "block";
     gallery.style.minHeight = "100vh";
     window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' });
     
-    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem;'>CARGANDO PORTAL INDUSTRIAL...</div>";
+    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem; letter-spacing:1px;'>CARGANDO PORTAL INDUSTRIAL...</div>";
     zipContainer.innerHTML = ""; 
 
     try {
+        // MODO AUTOMÁTICO (Wallpapers directos de GitHub)
         if (carpeta === 'wallpapers') {
             const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
             const files = await res.json();
@@ -51,6 +55,7 @@ async function showSection(carpeta) {
 
             setupBuscadorAndRender(datosMapeados);
         } 
+        // MODO CONFIGURADO (Demos / Manuales vinculados por config.json)
         else {
             const res = await fetch(`https://raw.githubusercontent.com/${usuario}/${repo}/main/${carpeta}/config.json`);
             const datos = await res.json();
@@ -131,4 +136,4 @@ async function downloadZip() {
         btn.innerHTML = "📦 DESCARGAR TODO EL PACK (.ZIP)";
         btn.disabled = false;
     }
-};
+}

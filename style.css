@@ -130,10 +130,10 @@ body {
 }
 .btn-download-all:hover { transform: translateY(-3px); }
 
-/* --- GALERÍA --- */
+/* --- GALERÍA (Grid Fijo Uniforme) --- */
 .gallery-container {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;
-    padding: 60px 40px; max-width: 1400px; margin: 0 auto; align-items: start;
+    padding: 60px 40px; max-width: 1400px; margin: 0 auto; align-items: start; /* PREVIENE TARJETAS ESTIRADAS */
 }
 .card {
     background: rgba(15, 15, 15, 0.55); backdrop-filter: blur(15px); border-radius: 24px; border: 1px solid var(--border);
