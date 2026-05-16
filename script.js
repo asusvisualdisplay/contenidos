@@ -8,7 +8,6 @@ const zipContainer = document.getElementById('zip-button-container');
 const heroMain = document.getElementById('hero-main');
 const requestSection = document.getElementById('request-section');
 
-// DESPLIEGA EL FORMULARIO DE PEDIDO OCULTANDO EL INICIO
 function openRequestForm() {
     heroMain.style.display = "none";
     gallery.innerHTML = "";
@@ -19,19 +18,16 @@ function openRequestForm() {
 }
 
 async function showSection(carpeta) {
-    // Asegurar limpieza de estados cruzados
     requestSection.style.display = "none";
     heroMain.style.display = "flex";
-    
     navSearchWrapper.style.display = "block";
     gallery.style.minHeight = "100vh";
     window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' });
     
-    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem; letter-spacing:1px;'>CARGANDO PORTAL INDUSTRIAL...</div>";
+    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem;'>CARGANDO PORTAL INDUSTRIAL...</div>";
     zipContainer.innerHTML = ""; 
 
     try {
-        // MODO AUTOMÁTICO (Wallpapers directos de GitHub)
         if (carpeta === 'wallpapers') {
             const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
             const files = await res.json();
@@ -55,7 +51,6 @@ async function showSection(carpeta) {
 
             setupBuscadorAndRender(datosMapeados);
         } 
-        // MODO MANUAL (Demos / Manuales configurados desde config.json)
         else {
             const res = await fetch(`https://raw.githubusercontent.com/${usuario}/${repo}/main/${carpeta}/config.json`);
             const datos = await res.json();
@@ -137,3 +132,39 @@ async function downloadZip() {
         btn.disabled = false;
     }
 }
+
+// =========================================================================
+// INTERCEPTOR SEGURO CONECTADO DE FORMA PRIVADA A FORMSPREE
+// =========================================================================
+document.getElementById('wallpaper-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault(); 
+    
+    const btn = this.querySelector('.btn-submit');
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = "🌀 Enviando datos...";
+    btn.disabled = true;
+
+    const formData = new FormData(this);
+
+    // TODO: REEMPLAZA "TU_ID_AQUÍ" CON EL ID QUE TE DA FORMSPREE AL CREAR TU FORMULARIO
+    const urlServicio = "https://formspree.io/f/xvzlewvj";
+
+    try {
+        const response = await fetch(urlServicio, {
+            method: "POST",
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            alert("¡Petición recibida al tiro, compadre! Buscaremos los contenidos para subirlos.");
+            location.reload(); 
+        } else {
+            throw new Error();
+        }
+    } catch (error) {
+        alert("Hubo un detalle al conectar con Formspree. Revisa que tu ID esté bien copiado en el script.js.");
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+    }
+});

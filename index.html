@@ -61,7 +61,7 @@
             <h2>Solicitar Nuevo Wallpaper</h2>
             <p>¿No encuentras el modelo industrial o ficha que buscas? Pídelo aquí.</p>
             
-            <form action="https://formsubmit.co/asus.martin.elizalde@gmail.com" method="POST">
+            <form id="wallpaper-form">
                 <div class="input-group">
                     <label for="form-name">Tu Nombre</label>
                     <input type="text" id="form-name" name="name" placeholder="Ej. Juan Pérez" required>
@@ -74,11 +74,8 @@
                 
                 <div class="input-group">
                     <label for="form-details">Detalles Específicos (Opcional)</label>
-                    <textarea id="form-details" name="comments" rows="3" placeholder="Ej. Resolución 4K, ficha técnica con Intel i7..."></textarea>
+                    <textarea id="form-details" name="comments" rows="3" placeholder="Ej. Resolución 4K, con procesador Intel i7..."></textarea>
                 </div>
-
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://asusvisualdisplay.github.io/">
 
                 <div class="form-buttons">
                     <button type="submit" class="btn-submit">Enviar Solicitud</button>
