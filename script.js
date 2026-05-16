@@ -131,40 +131,4 @@ async function downloadZip() {
         btn.innerHTML = "📦 DESCARGAR TODO EL PACK (.ZIP)";
         btn.disabled = false;
     }
-}
-
-// =========================================================================
-// INTERCEPTOR SEGURO CONECTADO DE FORMA PRIVADA A FORMSPREE
-// =========================================================================
-document.getElementById('wallpaper-form')?.addEventListener('submit', async function(e) {
-    e.preventDefault(); 
-    
-    const btn = this.querySelector('.btn-submit');
-    const textoOriginal = btn.innerHTML;
-    btn.innerHTML = "🌀 Enviando datos...";
-    btn.disabled = true;
-
-    const formData = new FormData(this);
-
-    // TODO: REEMPLAZA "TU_ID_AQUÍ" CON EL ID QUE TE DA FORMSPREE AL CREAR TU FORMULARIO
-    const urlServicio = "https://formspree.io/f/xvzlewvj";
-
-    try {
-        const response = await fetch(urlServicio, {
-            method: "POST",
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-            alert("¡Petición recibida al tiro, compadre! Buscaremos los contenidos para subirlos.");
-            location.reload(); 
-        } else {
-            throw new Error();
-        }
-    } catch (error) {
-        alert("Hubo un detalle al conectar con Formspree. Revisa que tu ID esté bien copiado en el script.js.");
-        btn.innerHTML = textoOriginal;
-        btn.disabled = false;
-    }
-});
+};
