@@ -1,0 +1,32 @@
+[
+  {
+    "nombre": "AMD Sales Engine Setup",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada1.png",
+    "link_descarga": "https://drive.google.com/file/d/1CyndDGoqZ9lGGINvPTgMzrDgmXiDhhqV/view?usp=drive_link"
+  },
+  {
+    "nombre": "IPOS SEARS",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada2.webp",
+    "link_descarga": "https://drive.google.com/drive/folders/1wC5mbdLQzj7qpgMEM2oBrjI-UxIM8ZFz?usp=drive_link"
+  },
+   {
+    "nombre": "IPOS DEPOT",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada3.png",
+    "link_descarga": "https://drive.google.com/file/d/1nTgqfCqRc_Gd9HOTRT7K4D8dSPGbemZd/view?usp=drive_link"
+  },
+    {
+    "nombre": "IPOS SANBORNS",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada4.png",
+    "link_descarga": "https://drive.google.com/file/d/1WFYzHDt3N1nxxSjcRVYICcbRawQ4VPsb/view?usp=drive_link"
+  },
+    {
+    "nombre": "LIVELY",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada5.webp",
+    "link_descarga": "https://drive.google.com/file/d/12Y6CcaR_DT4bbVt8DY6--b26x42B1vQP/view?usp=drive_link"
+  },
+     {
+    "nombre": "MATERIAL DE APOYO (AUDIO Y VIDEO)",
+    "imagen": "https://raw.githubusercontent.com/asusvisualdisplay/contenidos/main/demos/portada6.png",
+    "link_descarga": "https://drive.google.com/drive/folders/1vprJLy-RNbTn-XJnIv5sfAYrfRwadhlE?usp=drive_link"
+  }
+]

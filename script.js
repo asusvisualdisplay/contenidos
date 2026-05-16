@@ -1,4 +1,4 @@
-// CONFIGURACIÓN DE TU REPOSITORIO
+// CONFIGURACIÓN GLOBAL DE TU REPOSITORIO DE GITHUB
 const usuario = "asusvisualdisplay"; 
 const repo = "contenidos"; 
 
@@ -8,57 +8,106 @@ const searchInput = document.getElementById('modelSearch');
 const zipContainer = document.getElementById('zip-button-container');
 
 async function showSection(carpeta) {
-    // Activar buscador en Navbar
+    // Desplegar el buscador interactivo en la barra superior
     navSearchWrapper.style.display = "block";
-    
-    // Scroll suave hacia abajo para mostrar resultados
     gallery.style.minHeight = "100vh";
-    window.scrollTo({ 
-        top: window.innerHeight - 80, 
-        behavior: 'smooth' 
-    });
     
-    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5;'>Cargando portal...</div>";
+    // Desplazamiento suave hacia la zona de visualización
+    window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' });
+    
+    gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; opacity:0.5; font-size:0.9rem; letter-spacing:1px;'>CARGANDO PORTAL INDUSTRIAL...</div>";
+    zipContainer.innerHTML = ""; // Desactivar el botón ZIP general transitoriamente
 
     try {
-        const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
-        const files = await res.json();
+        // MODO AUTOMÁTICO: Para la sección de Wallpapers
+        if (carpeta === 'wallpapers') {
+            const res = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${carpeta}`);
+            const files = await res.json();
+            if (!Array.isArray(files)) throw new Error();
+            
+            const listaArchivos = files.filter(f => f.type === "file");
 
-        if (!Array.isArray(files)) throw new Error();
+            if (listaArchivos.length > 0) {
+                zipContainer.innerHTML = `
+                    <button class="btn-download-all" onclick="downloadZip()">
+                        📦 DESCARGAR TODO EL PACK (.ZIP)
+                    </button>`;
+            }
 
-        const listaArchivos = files.filter(f => f.type === "file");
+            // Unificamos la respuesta al formato de renderizado estándar
+            const datosMapeados = listaArchivos.map(f => ({
+                nombre: f.name.split('.')[0].replace(/-/g, ' ').toUpperCase(),
+                imagen: f.download_url,
+                link: f.download_url,
+                archivo_nombre: f.name
+            }));
 
-        // Lógica del botón ZIP (SÓLO para wallpapers)
-        if (carpeta === 'wallpapers' && listaArchivos.length > 0) {
-            zipContainer.innerHTML = `
-                <button class="btn-download-all" onclick="downloadZip()">
-                    📦 DESCARGAR TODO EL PACK (.ZIP)
-                </button>`;
-        } else {
-            // Limpiar si no es wallpapers para evitar descuadres
-            zipContainer.innerHTML = "";
+            setupBuscadorAndRender(datosMapeados);
+        } 
+        // MODO ESTRUCTURADO (JSON): Para Demos o Manuales con enlaces externos
+        else {
+            const res = await fetch(`https://raw.githubusercontent.com/${usuario}/${repo}/main/${carpeta}/config.json`);
+            const datos = await res.json();
+
+            const datosMapeados = datos.map(item => ({
+                nombre: item.nombre.toUpperCase(),
+                imagen: item.imagen,
+                link: item.link_descarga,
+                archivo_nombre: item.nombre
+            }));
+
+            setupBuscadorAndRender(datosMapeados);
         }
 
-        renderContent(listaArchivos, carpeta);
-
-        // Buscador vinculado a la Navbar
-        searchInput.oninput = (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtrados = listaArchivos.filter(f => f.name.toLowerCase().includes(val));
-            renderContent(filtrados, carpeta);
-        };
-
     } catch (e) {
-        gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; color:#ff4444;'>❌ Error de conexión con el repositorio.</div>";
+        gallery.innerHTML = "<div style='text-align:center; width:100%; padding:100px; color:#ff4444; font-size:0.9rem;'>❌ ERROR DE CARGA: Revisa que exista el archivo config.json en tu repositorio.</div>";
     }
 }
 
+function setupBuscadorAndRender(items) {
+    renderContent(items);
+
+    // Sistema dinámico de filtrado en tiempo real en base al Input
+    searchInput.oninput = (e) => {
+        const val = e.target.value.toLowerCase();
+        const filtrados = items.filter(item => item.nombre.toLowerCase().includes(val));
+        renderContent(filtrados);
+    };
+}
+
+function renderContent(list) {
+    gallery.innerHTML = "";
+    
+    if (list.length === 0) {
+        gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.4; padding:60px; font-size:0.9rem;'>No se encontraron registros de este modelo.</p>";
+        return;
+    }
+
+    list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        // Estructura: Imagen y Botón ejecutan de igual manera la descarga en pestaña externa limpia
+        card.innerHTML = `
+            <a href="${item.link}" target="_blank" class="img-link-wrapper">
+                <img src="${item.imagen}" class="preview-img" loading="lazy" alt="${item.nombre}">
+            </a>
+            <div class="info">
+                <h3>${item.nombre}</h3>
+                <a href="${item.link}" data-name="${item.archivo_nombre}" target="_blank" class="download-link">DESCARGAR</a>
+            </div>
+        `;
+        gallery.appendChild(card);
+    });
+}
+
+// Compresor de Wallpapers asíncrono integrado
 async function downloadZip() {
     const btn = document.querySelector('.btn-download-all');
     const links = document.querySelectorAll('.download-link');
-    if (!confirm(`Se comprimirán ${links.length} archivos. ¿Deseas continuar?`)) return;
+    if (!confirm(`Se procesarán y empaquetarán ${links.length} imágenes. ¿Proceder con la descarga masiva?`)) return;
 
-    btn.innerHTML = "🌀 Procesando ZIP...";
+    btn.innerHTML = "🌀 COMPRIMIENDO PAQUETE...";
     btn.disabled = true;
 
     const zip = new JSZip();
@@ -66,8 +115,7 @@ async function downloadZip() {
         const promises = Array.from(links).map(async (link) => {
             const response = await fetch(link.href);
             const blob = await response.blob();
-            // Asegurarnos de usar el nombre del atributo data-name
-            const name = link.getAttribute('data-name') || "archivo.jpg";
+            const name = link.getAttribute('data-name') || "wallpaper.jpg";
             zip.file(name, blob);
         });
 
@@ -75,45 +123,12 @@ async function downloadZip() {
         const content = await zip.generateAsync({ type: "blob" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(content);
-        a.download = "AsusVisualDisplay_Pack.zip";
+        a.download = "Pack_Wallpapers_AsusDisplay.zip";
         a.click();
     } catch (e) {
-        alert("Error al generar el ZIP.");
+        alert("Ocurrió un error al compilar los archivos en formato ZIP.");
     } finally {
         btn.innerHTML = "📦 DESCARGAR TODO EL PACK (.ZIP)";
         btn.disabled = false;
     }
-}
-
-function renderContent(list, type) {
-    gallery.innerHTML = "";
-    
-    if (list.length === 0) {
-        gallery.innerHTML = "<p style='text-align:center; width:100%; opacity:0.5; padding:50px;'>No se encontraron resultados.</p>";
-        return;
-    }
-
-    list.forEach(file => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        
-        // Limpiar el nombre para el título
-        const cleanName = file.name.split('.')[0].replace(/-/g, ' ').toUpperCase();
-
-        let mediaHTML = "";
-        if (type === 'wallpapers') {
-            mediaHTML = `<img src="${file.download_url}" class="preview-img" loading="lazy">`;
-        } else {
-            mediaHTML = `<div style="font-size:50px; padding:50px; text-align:center;">📄</div>`;
-        }
-
-        card.innerHTML = `
-            ${mediaHTML}
-            <div class="info">
-                <h3>${cleanName}</h3>
-                <a href="${file.download_url}" data-name="${file.name}" class="download-link">DESCARGAR</a>
-            </div>
-        `;
-        gallery.appendChild(card);
-    });
 }
